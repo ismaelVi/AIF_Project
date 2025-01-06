@@ -1,0 +1,12 @@
+src/__pycache__
+src/api/__pycache__
+src/data/__pycache__
+src/models/__pycache__
+src/models/__pycache__
+src/param/__pycache__/__init__.cpython-38.pyc
+src/param/__pycache__/param.cpython-38.pyc
+src/param/__pycache__/
+data/movies_with_embeddings.parquet
+data/glove.6B.100d.txt
+data/bow_embeddings_movie_posters.ann
+data/movies_with_embeddings.csv

@@ -1,0 +1,20 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api.dockerfile
+    ports:
+      - "8000:8000"  # Port pour FastAPI
+
+  gradio:
+    build:
+      context: .
+      dockerfile: Dockerfile.web.dockerfile
+    ports:
+      - "7860:7860"  # Port pour Gradio
+    environment:
+      API_URL: "http://api:8000"
+    depends_on:
+      - api  # Assurez-vous que l'API démarre avant Gradio
+    
+

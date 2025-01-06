@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+gradio
+torch
+torchvision
+gdown
+scikit-learn
+pillow
+annoy
+scipy
+gensim
+transformers
