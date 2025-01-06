@@ -10,3 +10,6 @@ data/movies_with_embeddings.parquet
 data/glove.6B.100d.txt
 data/bow_embeddings_movie_posters.ann
 data/movies_with_embeddings.csv
+data/annoy/metadata18.json
+data/saved_models/bow_model
+data.zip

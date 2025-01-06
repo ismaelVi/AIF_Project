@@ -17,7 +17,7 @@ from gensim.models import KeyedVectors
 
 from src.models.models import FilmGenreClassifier18
 
-from src.param.param import WEIGHTS_PATH, NUM_CLASSES, GENRES, OUTPUT_PATH, OUTPUT_FILE, GLOVE_PATH
+from src.param.param import WEIGHTS_PATH, NUM_CLASSES, GENRES, OUTPUT_PATH, OUTPUT_FILE, GLOVE_PATH, DISTILLBERT_MODEL_NAME
 
 
 ### Initialisation de l'app ###
@@ -66,8 +66,8 @@ async def predict(file: UploadFile = File(...)):
 ### Endpoint pour la recommandation de genre via poster ###
 @app.post("/recommend")
 async def recommend(file: UploadFile = File(...)):
-    # Charger et prétraiter l'image
 
+    # Charger et prétraiter l'image
     image = Image.open(file.file).convert("RGB")
     image = transform(image)
     image = image.unsqueeze(0)  # Ajouter une dimension pour le batch
@@ -89,7 +89,6 @@ async def recommend(file: UploadFile = File(...)):
 def load_annoy_index_and_metadata(embedding_type):
     df = pd.read_parquet(OUTPUT_PATH)
     embedding_dim = len(df[embedding_type][0])
-    print(embedding_dim)
     annoy_index = AnnoyIndex(embedding_dim, 'angular')
     annoy_index.load(f"data/{embedding_type}_movie_posters.ann")
     with open(f"data/{embedding_type}_metadata.json", "r") as f:
@@ -99,12 +98,8 @@ def load_annoy_index_and_metadata(embedding_type):
 # Fonction pour calculer les films les plus "proches" et obtenir les films recommandés
 def recommend_movies(plot, embedding_type="bow"):
     # Charger l'index Annoy et les métadonnées
-    print("chargement de l'index")
-    annoy_index, metadata = load_annoy_index_and_metadata(embedding_type)
-    print("index chargé")
-    
+    annoy_index, metadata = load_annoy_index_and_metadata(embedding_type)    
     # Calculer l'embedding du plot selon le type d'embedding choisi
-    print("calcul de l'embedding du plot")
     plot = plot.lower()
 
     if embedding_type == "bow_embeddings":
@@ -123,26 +118,18 @@ def recommend_movies(plot, embedding_type="bow"):
             vector = np.zeros(glove_model.vector_size)
 
     elif embedding_type == "bert_embeddings":
-        tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
-        model = DistilBertModel.from_pretrained("distilbert-base-uncased")            # Chargement du model
+        tokenizer = DistilBertTokenizer.from_pretrained(DISTILLBERT_MODEL_NAME)
+        model = DistilBertModel.from_pretrained(DISTILLBERT_MODEL_NAME)            # Chargement du model
         inputs = tokenizer(plot, return_tensors="pt", truncation=True, max_length=512, padding="max_length")
         with torch.no_grad():
             outputs = model(**inputs)
         vector = outputs.last_hidden_state.mean(dim=1).squeeze().numpy()              # embedding du nouveau plot 
 
 
-    print("embedding calculé")
-    print("valeur du vecteur : ")
-    print(vector)
-    print("taille du vecteur")
-    print(len(vector))
-    
     # Obtenir les indices des 6 films les plus similaires ( les vecteurs les plus proche dans l'index annoy)
-    print("obtenir les indeces des films similaires")
     indices = annoy_index.get_nns_by_vector(vector, 6, include_distances=False)
     
     # Récupérer les films recommandés correspondant
-    print("récupération des titres des films")
     recommendations = [metadata[idx] for idx in indices]
     
     # Extraire les résultats : titre du film et poster URL
@@ -161,8 +148,6 @@ class MovieRequest(BaseModel):
 
 @app.post("/recommendation_plot")
 async def get_recommendations(request: MovieRequest):
-    print(request.plot)
-    print(request.embedding_type)
     titles = recommend_movies(request.plot, request.embedding_type)
     return {"titles": titles}
 

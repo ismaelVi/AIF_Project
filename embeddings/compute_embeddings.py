@@ -12,12 +12,10 @@ import joblib
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 
-from src.param.param import CSV_PATH, OUTPUT_PATH, GLOVE_PATH, OUTPUT_FILE
+from src.param.param import CSV_PATH, OUTPUT_PATH, GLOVE_PATH, OUTPUT_FILE, DISTILLBERT_MODEL_NAME 
 
 
 
-# Charger les modèles et tokenizer pour GloVe et DistillBERT
-DISTILLBERT_MODEL_NAME = "distilbert-base-uncased"
 
 # 1. Charger les données
 def load_data(file_path):
@@ -93,12 +91,13 @@ def main():
     df["glove_embeddings"] = list(glove_embeddings)
 
     #Calcul des embeddings avec Bert
-    # print("Chargement du modèle DistillBERT...")
-    # tokenizer = DistilBertTokenizer.from_pretrained(DISTILLBERT_MODEL_NAME)
-    # model = DistilBertModel.from_pretrained(DISTILLBERT_MODEL_NAME)
-    # print("Calcul des embeddings DistillBERT...")
-    # bert_embeddings = compute_bert_embeddings(df["cleaned_overview"], tokenizer, model)
-    # df["bert_embeddings"] = list(bert_embeddings)
+    print("Chargement du modèle DistillBERT...")
+    tokenizer = DistilBertTokenizer.from_pretrained(DISTILLBERT_MODEL_NAME)
+    model = DistilBertModel.from_pretrained(DISTILLBERT_MODEL_NAME)
+    print("Calcul des embeddings DistillBERT...")
+    bert_embeddings = compute_bert_embeddings(df["cleaned_overview"], tokenizer, model)
+    df["bert_embeddings"] = list(bert_embeddings)
+
 
     # Sauvegarder le dataframe avec les embeddings
     print("Sauvegarde des résultats...")

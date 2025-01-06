@@ -19,3 +19,5 @@ LR = 0.001
 
 GENRES = os.listdir(DATA_PATH)
 NUM_CLASSES = len(GENRES)
+
+DISTILLBERT_MODEL_NAME = "distilbert-base-uncased"

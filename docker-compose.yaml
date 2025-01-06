@@ -1,10 +1,21 @@
 services:
+  data-drive:
+    build:
+      context: .
+      dockerfile: Dockerfile.data-drive.dockerfile
+    volumes:
+      - data_storage:/app/data  # Les fichiers téléchargés seront stockés ici
+
   api:
     build:
       context: .
       dockerfile: Dockerfile.api.dockerfile
     ports:
       - "8000:8000"  # Port pour FastAPI
+    volumes:
+      - data_storage:/app/data  # Montre les données téléchargées
+    depends_on:
+      - data-drive
 
   gradio:
     build:
@@ -14,7 +25,12 @@ services:
       - "7860:7860"  # Port pour Gradio
     environment:
       API_URL: "http://api:8000"
+    volumes:
+      - data_storage:/app/data  # Montre les données téléchargé
     depends_on:
       - api  # Assurez-vous que l'API démarre avant Gradio
+      - data-drive
     
+volumes:
+  data_storage:  # Déclaration du volume 'data_storage'
 

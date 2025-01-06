@@ -73,9 +73,9 @@ def build_annoy(df, embedding_type="bow_embeddings"):
 
 def build_all_annoy_indexes():
     # Créer et enregistrer les index Annoy pour chaque embedding
-    build_annoy(df, embedding_type="glove_embeddings")
-    build_annoy(df, embedding_type="bow_embeddings")
-    #build_annoy(df, embedding_type="bert_embeddings")
+    #build_annoy(df, embedding_type="glove_embeddings")
+    #build_annoy(df, embedding_type="bow_embeddings")
+    build_annoy(df, embedding_type="bert_embeddings")
 
 # Appeler la fonction pour créer tous les index
 build_all_annoy_indexes()

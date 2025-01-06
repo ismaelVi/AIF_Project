@@ -13,9 +13,6 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 # Étape 5 : Copier uniquement le fichier gradio_app.py dans le conteneur
 COPY gradio/gradio_app.py /app/gradio_app.py
 
-COPY data /app/data
-
-
 
 # Étape 6 : Exposer le port de l'application Gradio
 EXPOSE 7860
