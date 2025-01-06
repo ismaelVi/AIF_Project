@@ -119,6 +119,31 @@ class OODMetrics:
         plt.show()
 
         return auroc
+    
+
+class LogitBasedScorer:
+    @staticmethod
+    def mls(logits):
+        scores = - torch.max(torch.tensor(logits), dim=1)[0]
+        return scores.cpu().numpy()
+
+    @staticmethod
+    def msp(logits):
+        scores = torch.softmax(torch.tensor(logits), dim=1)
+        scores = torch.max(scores, dim=1)[0]
+        return scores.cpu().numpy()
+
+    @staticmethod
+    def energy(logits):
+        scores = - torch.logsumexp(torch.tensor(logits), dim=1)
+        return scores.cpu().numpy()
+
+    @staticmethod
+    def entropy(logits):
+        probs = torch.softmax(torch.tensor(logits), dim=1)
+        scores = - torch.sum(probs * torch.log(probs + 1e-10), dim=1)
+        return scores.cpu().numpy()
+
 
 class AnomalyDetector:
     def __init__(self, model, k=10):
