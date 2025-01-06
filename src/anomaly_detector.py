@@ -216,16 +216,90 @@ class AnomalyDetector:
         """
         self.model = model
         self.k = k
-        self.mahalanobis_detector = Mahalanobis()
-        self.dknn_detector = DKNN(k=k)
-        self.logit_scorer = LogitBasedScorer()
+        self.mahalanobis = Mahalanobis()
+        self.dknn = DKNN(k=k)
+        self.logit = LogitBasedScorer()
         self.fit_features = None
         self.fit_labels = None
 
-    def fit(self, features):
+    @staticmethod
+    def compute_threshold(scores, target_tpr=0.95):
         """
-        Entraîne le détecteur avec les caractéristiques fournies.
-        :param features: Matrice de caractéristiques (films valides uniquement).
+        Calcule un seuil basé sur un TPR cible.
+        :param scores: Liste ou tableau des scores.
+        :param target_tpr: True Positive Rate cible (valeur entre 0 et 1).
+        :return: Seuil calculé.
+        """
+        sorted_scores = np.sort(scores)
+        target_index = int(np.ceil((1 - target_tpr) * len(sorted_scores))) - 1
+
+        # Gestion des cas limites
+        target_index = max(0, target_index)
+        target_index = min(len(sorted_scores) - 1, target_index)
+
+        return sorted_scores[target_index]  
+    
+    @staticmethod
+    def compute_logits(dataset, model, device):
+        """
+        Extrait les logits directement depuis un dataset en utilisant un modèle PyTorch.
+        :param dataset: Dataset contenant les images et labels.
+        :param model: Modèle PyTorch.
+        :param device: Appareil (CPU ou GPU).
+        :return: Tensor contenant tous les logits.
+        """
+        all_logits = []
+        model.eval()
+        with torch.no_grad():
+            for i in range(len(dataset)):
+                image, _ = dataset[i]  # Récupérer l'image directement depuis le dataset
+                image = image.unsqueeze(0).to(device)  # Ajouter une dimension batch et déplacer sur le device
+                logits = model(image)
+                all_logits.append(logits)
+        return torch.cat(all_logits, dim=0)
+    
+    @staticmethod
+    def compute_features(dataset, model, device):
+        """
+        Extrait les caractéristiques directement depuis un dataset en utilisant un modèle PyTorch.
+        :param dataset: Dataset contenant les images et labels.
+        :param model: Modèle PyTorch avec extraction de caractéristiques activée.
+        :param device: Appareil (CPU ou GPU).
+        :return: Tensor contenant toutes les caractéristiques extraites.
+        """
+        all_features = []
+        model.eval()
+        with torch.no_grad():
+            for i in range(len(dataset)):
+                image, _ = dataset[i]  # Récupérer l'image directement depuis le dataset
+                image = image.unsqueeze(0).to(device)  # Ajouter une dimension batch et déplacer sur le device
+                features = model(image, return_features=True)  # Supposer que le modèle retourne les features
+                all_features.append(features)
+        return torch.cat(all_features, dim=0)
+    
+    def compute_scores(self, features):
+        """
+        Calcule les scores pour toutes les méthodes.
+        :param features: Matrice de caractéristiques (torch.Tensor).
+        :return: Dictionnaire des scores.
+        """
+        with torch.no_grad():
+            logits = self.model(features)  # Obtenir les logits du modèle
+
+        scores = {
+            "mls": self.logit.mls(logits),
+            "msp": self.logit.msp(logits),
+            "energy": self.logit.energy(logits),
+            "entropy": self.logit.entropy(logits),
+            "dknn": self.dknn.compute_scores(features),
+            "mahalanobis": self.mahalanobis.compute_scores(features)
+        }
+        return scores
+
+    def fit(self, features, labels):
+        """
+        Entraîne les détecteurs avec les features fournies.
+        :param features: Matrice de features (films valides uniquement).
         """
         pass
 
