@@ -6,7 +6,7 @@ import json
 import os
 
 from src.models.models import FilmGenreClassifier18
-from src.param.param import DATA_PATH, NUM_CLASSES, WEIGHTS_PATH
+from src.param.param import DATA_PATH, NUM_CLASSES, WEIGHTS_PATH, SHORT_DATA_PATH
 
 
 
@@ -49,7 +49,7 @@ for genre_folder in os.listdir(DATA_PATH):
             metadata.append({
                         "id": current_id, # Id unique
                         "title": image_file.split('.')[0],  # Nom de l'image comme titre
-                        "poster_url": image_path,          # Chemin ou URL du poster
+                        "poster_url": os.path.join(SHORT_DATA_PATH, genre_folder,image_file),  # Chemin dynamique ou URL du poster
                         "genre": genre_folder              # Genre correspondant au dossier
                     })
 

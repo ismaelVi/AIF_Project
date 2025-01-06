@@ -10,3 +10,5 @@ annoy
 scipy
 gensim
 transformers
+pyarrow
+fastparquet

@@ -36,7 +36,7 @@ def recommend_movies(image):
             recommended_paths = data.get("recommendations", [])
             if recommended_paths:
                 # Charger les images depuis les chemins absolus
-                images = [Image.open(path) for path in recommended_paths]
+                images = [Image.open(os.path.abspath(__file__ +'/../'+path)) for path in recommended_paths]
                 return images
             else:
                 return "Aucune recommandation disponible."
