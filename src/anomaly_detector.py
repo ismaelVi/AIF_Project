@@ -300,8 +300,23 @@ class AnomalyDetector:
         """
         Entraîne les détecteurs avec les features fournies.
         :param features: Matrice de features (films valides uniquement).
+        :param labels: Labels associés.
         """
-        pass
+        #Sauvegarde des features extraites
+        self.fit_features = features
+        self.fit_labels = labels
 
-    def predict(self, X): 
+        # Entraînement Mahalanobis
+        self.mahalanobis.fit(features, labels)
+
+        # Entraînement DKNN
+        self.dknn.fit(features)
+
+    def predict(self, features): 
+        """
+        Prédit si les échantillons sont OOD ou non.
+        :param features: Matrice defeatures.
+        :param thresholds: Dictionnaire des seuils pour chaque méthode.
+        :return: Dictionnaire des résultats (1: normal, -1: anomalie).
+        """
         pass 
