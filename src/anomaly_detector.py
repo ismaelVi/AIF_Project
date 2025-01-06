@@ -214,7 +214,13 @@ class AnomalyDetector:
         :param model: Modèles construits.
         :param k: Nombre de voisins pour DKNN.
         """
-        pass
+        self.model = model
+        self.k = k
+        self.mahalanobis_detector = Mahalanobis()
+        self.dknn_detector = DKNN(k=k)
+        self.logit_scorer = LogitBasedScorer()
+        self.fit_features = None
+        self.fit_labels = None
 
     def fit(self, features):
         """
