@@ -29,7 +29,7 @@ transform = transforms.Compose([
 metadata = []  # Pour stocker les informations des films
 current_id = 0
 
-
+#Parcourir tout le films
 for genre_folder in os.listdir(DATA_PATH):
     genre_path = os.path.join(DATA_PATH, genre_folder)
     if os.path.isdir(genre_path):
@@ -58,8 +58,8 @@ for genre_folder in os.listdir(DATA_PATH):
             current_id += 1
             
 # Construire l'index Annoy
-annoy_index.build(75)  # Le nombre d'arbres peut être ajusté (ex. : 10 ou 20)
-annoy_index.save("data/annoy/movie_posters_resnet18.ann")
+annoy_index.build(75)  # Le nombre d'arbres peut être modifié
+annoy_index.save("data/annoy/movie_posters_resnet18.ann") #sauvegarder l'index
 
 # Sauvegarder les métadonnées en JSON
 output_metadata_path = "data/annoy/metadata18.json"

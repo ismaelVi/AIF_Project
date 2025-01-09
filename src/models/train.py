@@ -1,7 +1,7 @@
 import torch
 import sys
 
-
+##### Fonction classique pour entrainer et tester un modèle #####
 
 def train_model(model, train_loader, criterion, optimizer, num_epochs=10, device='cuda'):
 
@@ -41,15 +41,7 @@ def train_model(model, train_loader, criterion, optimizer, num_epochs=10, device
     return model
 
 def test_model(model, test_loader, device='cuda'):
-    """
-    Évalue le modèle sur l'ensemble de test.
     
-    Args:
-        model: Le modèle PyTorch à évaluer.
-        test_loader: DataLoader pour l'ensemble de test.
-        device: 'cuda' ou 'cpu' pour évaluer sur GPU ou CPU.
-    """
-
     model.to(device)
     model.eval()
     

@@ -7,7 +7,7 @@ WORKDIR /app
 
 COPY requirements.txt /app/requirements.txt
 
-# Mettez à jour les dépôts et installez les dépendances système nécessaires
+# Mettre à jour les dépôts et installer les dépendances système nécessaires
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
@@ -15,7 +15,6 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Étape 5 : Installer les dépendances Python
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
 # Étape 3 : Copier le code source et les fichiers nécessaires
@@ -26,14 +25,14 @@ COPY src/param/param.py /app/src/param/param.py
 # Ajouter /app au PYTHONPATH
 ENV PYTHONPATH=/app
 
-# Étape 7 : Exposer le port de l'application
+# Étape 4 : Exposer le port de l'application
 EXPOSE 8000
 
-# Copier le script de démarrage
+# Étape 5 : Copier le script de démarrage
 COPY start_api.sh /app/start_api.sh
 
-# Étape 4 : Rendre le script exécutable
+# Étape 6 : Rendre le script exécutable
 RUN chmod +x /app/start_api.sh
 
-# Étape 5 : Exécuter le script de démarrage
+# Étape 7 : Exécuter le script de démarrage
 CMD ["/bin/bash", "/app/start_api.sh"]

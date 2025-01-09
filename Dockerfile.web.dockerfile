@@ -17,6 +17,6 @@ COPY gradio/gradio_app.py /app/gradio_app.py
 # Étape 6 : Exposer le port de l'application Gradio
 EXPOSE 7860
 
-# Étape 8 : Lancer l'application Gradio
+# Étape 7 : Lancer l'application Gradio
 CMD ["python", "gradio_app.py"]
 

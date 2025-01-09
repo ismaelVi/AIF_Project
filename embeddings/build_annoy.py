@@ -30,7 +30,7 @@ def build_annoy(df, embedding_type="bow_embeddings"):
     # Créer une liste de métadonnées
     metadata = []
     
-    #Ajouter tout les embeddings à notre index et metre à jour metadata pour pouvoir lié les embeddings avec les noms des films
+    #Ajouter tout les embeddings à notre index et metre à jour metadata pour pouvoir lier les embeddings avec les noms des films
     for i, (embedding, title) in enumerate(zip(df[embedding_type], df['title'])):
 
         if not isinstance(embedding, (list, np.ndarray)):
@@ -73,8 +73,8 @@ def build_annoy(df, embedding_type="bow_embeddings"):
 
 def build_all_annoy_indexes():
     # Créer et enregistrer les index Annoy pour chaque embedding
-    #build_annoy(df, embedding_type="glove_embeddings")
-    #build_annoy(df, embedding_type="bow_embeddings")
+    build_annoy(df, embedding_type="glove_embeddings")
+    build_annoy(df, embedding_type="bow_embeddings")
     build_annoy(df, embedding_type="bert_embeddings")
 
 # Appeler la fonction pour créer tous les index

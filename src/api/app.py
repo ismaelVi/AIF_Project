@@ -4,7 +4,6 @@ from torchvision import transforms
 from PIL import Image
 from annoy import AnnoyIndex
 import json
-from fastapi.staticfiles import StaticFiles
 import pandas as pd
 import joblib
 
@@ -12,7 +11,6 @@ from pydantic import BaseModel
 import numpy as np
 
 from transformers import DistilBertTokenizer, DistilBertModel
-from sklearn.feature_extraction.text import CountVectorizer
 from gensim.models import KeyedVectors
 
 from src.models.models import FilmGenreClassifier18
@@ -29,13 +27,14 @@ model = FilmGenreClassifier18(num_classes=NUM_CLASSES)
 model.load_state_dict(torch.load(model_weights, map_location=torch.device('cpu')))
 model.eval()
 
+
 # Transformations d'entrée à appliquer à l'image pour le modèle de prédiction de genre
 transform = transforms.Compose([
     transforms.Resize((224, 224)),  
     transforms.ToTensor(),
 ])
 
-### Chargelent de l'index annoy pour la recommandation de film via poster ###
+### Chargement de l'index annoy pour la recommandation de film via poster ###
 annoy_index = AnnoyIndex(NUM_CLASSES, 'angular')
 annoy_index.load("data/annoy/movie_posters_resnet18.ann")  # Charger l'index Annoy préconstruit
 
@@ -79,7 +78,7 @@ async def recommend(file: UploadFile = File(...)):
     # Trouver les 5 voisins les plus proches
     indices = annoy_index.get_nns_by_vector(vector, 6, include_distances=False)
     recommendations = [metadata[idx] for idx in indices[1:]]
-    return {"recommendations": [dct['poster_url'] for dct in recommendations]}
+    return {"recommendations": [dct['poster_url'] for dct in recommendations]} #retourner les url des poster des 5 plus proches voisins
 
 
 ###### Recommandation basé sur la description du film ########
@@ -89,16 +88,16 @@ async def recommend(file: UploadFile = File(...)):
 def load_annoy_index_and_metadata(embedding_type):
     df = pd.read_parquet(OUTPUT_PATH)
     embedding_dim = len(df[embedding_type][0])
-    annoy_index = AnnoyIndex(embedding_dim, 'angular')
-    annoy_index.load(f"data/{embedding_type}_movie_posters.ann")
+    annoy_index2 = AnnoyIndex(embedding_dim, 'angular')
+    annoy_index2.load(f"data/{embedding_type}_movie_posters.ann")
     with open(f"data/{embedding_type}_metadata.json", "r") as f:
-        metadata = json.load(f)
-    return annoy_index, metadata
+        metadata2 = json.load(f)
+    return annoy_index2, metadata2
 
 # Fonction pour calculer les films les plus "proches" et obtenir les films recommandés
 def recommend_movies(plot, embedding_type="bow"):
     # Charger l'index Annoy et les métadonnées
-    annoy_index, metadata = load_annoy_index_and_metadata(embedding_type)    
+    annoy_index2, metadata2 = load_annoy_index_and_metadata(embedding_type)    
     # Calculer l'embedding du plot selon le type d'embedding choisi
     plot = plot.lower()
 
@@ -127,10 +126,10 @@ def recommend_movies(plot, embedding_type="bow"):
 
 
     # Obtenir les indices des 6 films les plus similaires ( les vecteurs les plus proche dans l'index annoy)
-    indices = annoy_index.get_nns_by_vector(vector, 6, include_distances=False)
+    indices = annoy_index2.get_nns_by_vector(vector, 6, include_distances=False)
     
     # Récupérer les films recommandés correspondant
-    recommendations = [metadata[idx] for idx in indices]
+    recommendations = [metadata2[idx] for idx in indices]
     
     # Extraire les résultats : titre du film et poster URL
     recommended_titles = [rec['title'] for rec in recommendations]

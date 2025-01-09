@@ -1,6 +1,5 @@
 import os 
 
-# Convertir en chemin absolu
 DATA_PATH = os.path.abspath(__file__ + '/../../../data/raw/sorted_movie_posters_paligema')
 SHORT_DATA_PATH = 'data/raw/sorted_movie_posters_paligema'
 CSV_PATH = os.path.abspath(__file__ + '/../../../data/movies_metadata.csv')

@@ -17,25 +17,25 @@ from src.param.param import CSV_PATH, OUTPUT_PATH, GLOVE_PATH, OUTPUT_FILE, DIST
 
 
 
-# 1. Charger les données
+# Charger les données
 def load_data(file_path):
     df = pd.read_csv(file_path, low_memory=False)
     # Garder uniquement les colonnes nécessaires
     return df[["id", "title", "overview"]].dropna(subset=["overview"]).reset_index(drop=True)
 
-# 2. Nettoyer le texte
+# Nettoyer le texte
 def clean_text(text):
     # Supprime ponctuation, transforme en minuscule, etc. (simplifié ici)
     return text.lower()
 
-# 3. Embedding Bag of Words
+# Embedding Bag of Words
 def compute_bow_embeddings(overviews):
     vectorizer = CountVectorizer(max_features=5000)  # Limite à 5000 mots les plus fréquents
     bow_matrix = vectorizer.fit_transform(overviews)
     return bow_matrix.toarray(), vectorizer
 
 
-# 4. Embedding GloVe
+# Embedding GloVe
 def load_glove_model(glove_path):
     return KeyedVectors.load_word2vec_format(glove_path, binary=False, no_header=True)
 
@@ -51,7 +51,7 @@ def compute_glove_embeddings(overviews, glove_model):
     return np.array(embeddings)
 
 
-# 5. Embedding DistillBERT
+# Embedding DistillBERT
 def compute_bert_embeddings(overviews, tokenizer, model):
     embeddings = []
     for text in overviews:

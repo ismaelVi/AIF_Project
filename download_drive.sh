@@ -3,17 +3,17 @@
 # Chemin où les données seront téléchargées
 DATA_DIR="/app"
 
-# Assurez-vous que le répertoire de destination existe
+# Check existence du répertoire
 mkdir -p $DATA_DIR
 
-# ID du fichier Google Drive (extrait de l'URL)
+# ID du fichier Google Drive (extrait du lien de partage)
 FILE_ID="11JzOWNLua9Tg-pS9XvRu6vcSx1-40lvo"
 
 # Utiliser gdown pour télécharger le fichier .zip
 echo "Téléchargement du fichier .zip depuis Google Drive..."
 gdown "https://drive.google.com/uc?id=$FILE_ID" -O "$DATA_DIR/fichier.zip"
 
-# Vérifiez si le téléchargement a réussi
+# Check si le téléchargement a réussi
 if [ $? -eq 0 ]; then
     echo "Téléchargement réussi."
 else
@@ -25,7 +25,7 @@ fi
 echo "Décompression du fichier .zip..."
 unzip "$DATA_DIR/fichier.zip" -d "$DATA_DIR"
 
-# Créer un fichier indicateur pour signaler la fin du processus
+# Créer un fichier indicateur pour signaler la fin du processus (pour start_api)
 touch /app/data/download_done.txt
 
 # Vérifiez si la décompression a réussi

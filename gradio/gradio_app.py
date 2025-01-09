@@ -2,7 +2,7 @@ import os
 import gradio as gr
 import requests
 from PIL import Image
-from urllib.parse import urljoin
+
 
 # URL de votre API FastAPI
 API_URL = os.getenv("API_URL", "http://127.0.0.1:8000")  # Par défaut, utilise localhost pour le dev local
@@ -35,7 +35,7 @@ def recommend_movies(image):
             # Extraire les chemins des images des films recommandés
             recommended_paths = data.get("recommendations", [])
             if recommended_paths:
-                # Charger les images depuis les chemins absolus
+                # Charger les images depuis les chemins
                 images = [Image.open(os.path.abspath(__file__ +'/../'+path)) for path in recommended_paths]
                 return images
             else:
@@ -77,7 +77,6 @@ with gr.Blocks() as demo:
         with gr.Column():
             # Interface pour les recommandations
             recommendation_image = gr.Image(type="filepath", label="Télécharger l'affiche pour des recommandations")
-            #recommendations_output = gr.Textbox(label="film recomadé")
             recommendations_output = gr.Gallery(type = "filepath", label="Films Recommandés") # gr.Textbox(label="Genre prédit")  # 
             recommend_button = gr.Button("Obtenir des Recommandations")
     with gr.Row():
@@ -91,9 +90,8 @@ with gr.Blocks() as demo:
                 choices=["bow_embeddings", "glove_embeddings", "bert_embeddings"], 
                 value="bow_embeddings"  # Valeur par défaut
             )
-            
-            api_recommend_button = gr.Button("Obtenir Recommandations")
             api_recommendations_output = gr.Textbox(label="Films recommandés par l'API")
+            api_recommend_button = gr.Button("Obtenir Recommandations")
 
         
     # Connecter les fonctions aux boutons
