@@ -10,7 +10,8 @@ GLOVE_PATH = os.path.abspath(__file__ + '/../../../data/glove.6B.100d.txt')
 
 
 WEIGHTS_PATH = {'RESNET18': os.path.abspath(__file__ + '/../../../data/saved_models/film_genre_classifier18.pth'),
-                'RESNET50': os.path.abspath(__file__ + '/../../../data/saved_models/film_genre_classifier50.pth')
+                'RESNET50': os.path.abspath(__file__ + '/../../../data/saved_models/film_genre_classifier50.pth'),
+                'ANOMALIE18': os.path.abspath(__file__ + '/../../../data/saved_models/anomalie18.pth')
                 }
 
 NUM_EPOCHS = 1

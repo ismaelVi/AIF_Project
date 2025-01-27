@@ -12,3 +12,16 @@ class FilmGenreClassifier18(nn.Module):
 
     def forward(self, x):
         return self.base_model(x)
+
+# Classe du modèle
+class AnomalieClassifier(nn.Module):
+    def __init__(self, num_classes=1):
+        super(AnomalieClassifier, self).__init__()
+        self.base_model = models.resnet18(pretrained=True)
+        # Remplacer la dernière couche pour la classification binaire
+        self.base_model.fc = nn.Linear(self.base_model.fc.in_features, num_classes)
+        self.sigmoid = nn.Sigmoid()
+
+    def forward(self, x):
+        x = self.base_model(x)
+        return self.sigmoid(x)  # Pour une sortie de probabilité entre 0 et 1

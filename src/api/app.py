@@ -13,7 +13,7 @@ import numpy as np
 from transformers import DistilBertTokenizer, DistilBertModel
 from gensim.models import KeyedVectors
 
-from src.models.models import FilmGenreClassifier18
+from src.models.models import FilmGenreClassifier18, AnomalieClassifier
 
 from src.param.param import WEIGHTS_PATH, NUM_CLASSES, GENRES, OUTPUT_PATH,OUTPUT_PATH2, OUTPUT_FILE, GLOVE_PATH, DISTILLBERT_MODEL_NAME
 
@@ -27,6 +27,11 @@ model = FilmGenreClassifier18(num_classes=NUM_CLASSES)
 model.load_state_dict(torch.load(model_weights, map_location=torch.device('cpu')))
 model.eval()
 
+# Charger le modèle pour ma détection d'anomalie
+model_anomalie = AnomalieClassifier()
+model_weights2 = WEIGHTS_PATH['ANOMALIE18']
+model_anomalie.load_state_dict(torch.load(model_weights2, map_location=torch.device('cpu')))
+model_anomalie.eval()
 
 # Transformations d'entrée à appliquer à l'image pour le modèle de prédiction de genre
 transform = transforms.Compose([
@@ -52,13 +57,28 @@ def read_root():
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
     # Charger l'image et appliquer les transformations
-    image = Image.open(file.file).convert("RGB")
-    image = transform(image)
-    image = image.unsqueeze(0)  # Ajouter une dimension pour le batch
+    try:
+        image = Image.open(file.file).convert("RGB")
+    except Exception:
+        return {"error": "L'image fournie n'est pas valide."}
+
+    # Prétraiter l'image
+    image_tensor = transform(image).unsqueeze(0)  # Ajouter une dimension pour le batch
+
+    # Étape 1 : Vérifier si l'image est un poster de film
     with torch.no_grad():
-        output = model(image)  # Faire la prédiction
-        _, predicted = torch.max(output, 1)  # Obtenir la classe prédite
-    return {"genre": GENRES[predicted.item()]}  # Retourner le genre prédit
+        detection_output = model_anomalie(image_tensor)
+        is_poster = (detection_output > 0.5).item()  # Seuil de détection
+
+    if not is_poster:
+        return {"genre": "erreur : L'image fournie n'est pas un poster de film."}
+
+    # Étape 2 : Prédire le genre
+    with torch.no_grad():
+        genre_output = model(image_tensor)
+        _, predicted = torch.max(genre_output, 1)  # Obtenir la classe prédite
+
+    return {"genre": GENRES[predicted.item()]}
 
 
 
