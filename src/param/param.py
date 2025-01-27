@@ -4,6 +4,7 @@ DATA_PATH = os.path.abspath(__file__ + '/../../../data/raw/sorted_movie_posters_
 SHORT_DATA_PATH = 'data/raw/sorted_movie_posters_paligema'
 CSV_PATH = os.path.abspath(__file__ + '/../../../data/movies_metadata.csv')
 OUTPUT_PATH = os.path.abspath(__file__ + '/../../../data/movies_with_embeddings.parquet')
+OUTPUT_PATH2 = os.path.abspath(__file__ + '/../../../data/movies_with_embeddings2.parquet')
 OUTPUT_FILE = os.path.abspath(__file__ + '/../../../data')
 GLOVE_PATH = os.path.abspath(__file__ + '/../../../data/glove.6B.100d.txt')
 

@@ -7,7 +7,7 @@ DATA_DIR="/app"
 mkdir -p $DATA_DIR
 
 # ID du fichier Google Drive (extrait du lien de partage)
-FILE_ID="11JzOWNLua9Tg-pS9XvRu6vcSx1-40lvo"
+FILE_ID="1JYfJaqkkHz6eD5MiJQF2dtj77XnuCGKx"
 
 # Utiliser gdown pour télécharger le fichier .zip
 echo "Téléchargement du fichier .zip depuis Google Drive..."

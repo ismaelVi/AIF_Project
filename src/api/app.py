@@ -15,7 +15,7 @@ from gensim.models import KeyedVectors
 
 from src.models.models import FilmGenreClassifier18
 
-from src.param.param import WEIGHTS_PATH, NUM_CLASSES, GENRES, OUTPUT_PATH, OUTPUT_FILE, GLOVE_PATH, DISTILLBERT_MODEL_NAME
+from src.param.param import WEIGHTS_PATH, NUM_CLASSES, GENRES, OUTPUT_PATH,OUTPUT_PATH2, OUTPUT_FILE, GLOVE_PATH, DISTILLBERT_MODEL_NAME
 
 
 ### Initialisation de l'app ###
@@ -86,7 +86,10 @@ async def recommend(file: UploadFile = File(...)):
 
 #Fonction pour charger l'index Annoy et les metadata
 def load_annoy_index_and_metadata(embedding_type):
-    df = pd.read_parquet(OUTPUT_PATH)
+    if embedding_type != "bert_embeddings":
+        df = pd.read_parquet(OUTPUT_PATH)
+    else:
+        df = pd.read_parquet(OUTPUT_PATH2)
     embedding_dim = len(df[embedding_type][0])
     annoy_index2 = AnnoyIndex(embedding_dim, 'angular')
     annoy_index2.load(f"data/{embedding_type}_movie_posters.ann")
