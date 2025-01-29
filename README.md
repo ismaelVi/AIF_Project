@@ -20,7 +20,7 @@ docker compose up
 The application will be available at:  
 🔗 [http://127.0.0.1:7860/](http://127.0.0.1:7860/)
 
-###4️⃣ **Test the API**
+### 4️⃣ **Test the API**
 Once the application is running, you can test the system using the two images below:
 
 📌 Image triggering an anomaly ( for genre prediction) 🛑
@@ -40,7 +40,7 @@ Here is an example: "the adventures of Woody, a cowboy doll who feels threatened
 *ℹ️ Note: The models are poorly trained, so the results may not be accurate.
 For example, the anomaly detection model rarely triggers an anomaly case. This is why we provide an example to ensure it still works correctly.*
 
-###5️⃣ **Stop the Containers** 🛑
+### 5️⃣ **Stop the Containers** 🛑
 To stop the application, choose one of the following options:  
 ```bash
 docker compose down
@@ -67,7 +67,7 @@ sudo docker compose up
 The application will be available at:  
 🔗 [http://127.0.0.1:7860/](http://127.0.0.1:7860/)
 
-###4️⃣ **Test the API**
+### 4️⃣ **Test the API**
 Once the application is running, you can test the system using the two images below:
 
 📌 Image triggering an anomaly ( for genre prediction) 🛑 
