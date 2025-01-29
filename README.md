@@ -33,8 +33,8 @@ Once the application is running, you can test the system using the two images be
 ![110](https://github.com/user-attachments/assets/6d34c32b-1ca9-479c-b331-efa0085ad3f1)
 
 
-You can also test the recommandation with description by providing a movie description. Here is an example:
-"description de film ici"
+You can also test the recommandation with description by providing a movie description. 
+Here is an example: "the adventures of Woody, a cowboy doll who feels threatened when his owner, Andy, receives a new, high-tech action figure—Buzz Lightyear"
 
 *ℹ️ Note: The models are poorly trained, so the results may not be accurate.
 For example, the anomaly detection model rarely triggers an anomaly case. This is why we provide an example to ensure it still works correctly.*
@@ -79,8 +79,8 @@ Once the application is running, you can test the system using the two images be
 ![110](https://github.com/user-attachments/assets/6d34c32b-1ca9-479c-b331-efa0085ad3f1)
 
 
-You can also test the recommandation with description by providing a movie description. Here is an example:
-"description de film ici"
+You can also test the recommandation with description by providing a movie description.
+Here is an example: "the adventures of Woody, a cowboy doll who feels threatened when his owner, Andy, receives a new, high-tech action figure—Buzz Lightyear"
 
 *ℹ️ Note: The models are poorly trained, so the results may not be accurate.
 For example, the anomaly detection model rarely triggers an anomaly case. This is why we provide an example to ensure it still works correctly.*
