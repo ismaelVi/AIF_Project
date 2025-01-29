@@ -34,6 +34,7 @@ Once the application is running, you can test the system using the two images be
 
 
 You can also test the recommandation with description by providing a movie description. 
+<br>
 Here is an example: "the adventures of Woody, a cowboy doll who feels threatened when his owner, Andy, receives a new, high-tech action figure—Buzz Lightyear"
 
 *ℹ️ Note: The models are poorly trained, so the results may not be accurate.
@@ -80,6 +81,7 @@ Once the application is running, you can test the system using the two images be
 
 
 You can also test the recommandation with description by providing a movie description.
+<br>
 Here is an example: "the adventures of Woody, a cowboy doll who feels threatened when his owner, Andy, receives a new, high-tech action figure—Buzz Lightyear"
 
 *ℹ️ Note: The models are poorly trained, so the results may not be accurate.
