@@ -23,19 +23,21 @@ The application will be available at:
 ###4️⃣ **Test the API**
 Once the application is running, you can test the system using the two images below:
 
-📌 Image triggering an anomaly ( for genre prediction) 🛑 
+📌 Image triggering an anomaly ( for genre prediction) 🛑 br
+<br>
 ![test1](https://github.com/user-attachments/assets/88946dbc-ffa5-4f43-b354-eed2bebd9e52)
 
 
 📌 Image triggering a valid movie result (can be use for genre prediction and recommandation)🎬 
+<br>
 ![110](https://github.com/user-attachments/assets/6d34c32b-1ca9-479c-b331-efa0085ad3f1)
 
 
 You can also test the recommandation with description by providing a movie description. Here is an example:
 "description de film ici"
 
-ℹ️ Note: The models are poorly trained, so the results may not be accurate.
-For example, the anomaly detection model rarely triggers an anomaly case. This is why we provide an example to ensure it still works correctly.
+*ℹ️ Note: The models are poorly trained, so the results may not be accurate.
+For example, the anomaly detection model rarely triggers an anomaly case. This is why we provide an example to ensure it still works correctly.*
 
 ###5️⃣ **Stop the Containers** 🛑
 To stop the application, choose one of the following options:  
