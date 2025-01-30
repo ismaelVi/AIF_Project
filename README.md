@@ -37,11 +37,11 @@ You can also test the recommandation with description by providing a movie descr
 <br>
 Here is an example: "the adventures of Woody, a cowboy doll who feels threatened when his owner, Andy, receives a new, high-tech action figure—Buzz Lightyear"
 
-*ℹ️ Note: The aim of the project is not to be performance-oriented, so:
+ℹ️ Note: The aim of the project is not to be performance-oriented, so:
 
 - The models are poorly trained, meaning the results may not be accurate.
 For example, the anomaly detection model rarely triggers an anomaly case. This is why we provide an example to ensure it still works correctly.
--The feature embedding extraction is based on only 10 dimensions to ensure fast computation.*
+- The feature embedding extraction is based on only 10 dimensions to ensure fast computation.
 
 ### 5️⃣ **Stop the Containers** 🛑
 To stop the application, choose one of the following options:  
