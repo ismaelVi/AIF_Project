@@ -1,37 +1,41 @@
 #!/bin/bash
 
-# Chemin où les données seront téléchargées
+# Définition des variables
 DATA_DIR="/app"
-
-# Check existence du répertoire
-mkdir -p $DATA_DIR
-
-# ID du fichier Google Drive (extrait du lien de partage)
+ZIP_FILE="$DATA_DIR/fichier.zip"
+MARKER_FILE="$DATA_DIR/data/RINE.txt"
 FILE_ID="1JYfJaqkkHz6eD5MiJQF2dtj77XnuCGKx"
 
-# Utiliser gdown pour télécharger le fichier .zip
-echo "Téléchargement du fichier .zip depuis Google Drive..."
-gdown "https://drive.google.com/uc?id=$FILE_ID" -O "$DATA_DIR/fichier.zip"
+# Vérifier et créer le répertoire si nécessaire
+if [ ! -d "$DATA_DIR" ]; then
+    mkdir -p "$DATA_DIR" || { echo "Erreur : Impossible de créer $DATA_DIR"; exit 1; }
+fi
 
-# Check si le téléchargement a réussi
-if [ $? -eq 0 ]; then
-    echo "Téléchargement réussi."
-else
+# Téléchargement du fichier ZIP depuis Google Drive
+echo "Téléchargement du fichier .zip depuis Google Drive..."
+gdown --fuzzy "https://drive.google.com/uc?id=$FILE_ID" -O "$ZIP_FILE"
+
+# Vérifier si le téléchargement a réussi
+if [ $? -ne 0 ]; then
     echo "Erreur lors du téléchargement."
     exit 1
+else
+    echo "Téléchargement réussi."
 fi
 
-# Décompresser le fichier .zip téléchargé
+# Décompression du fichier ZIP
 echo "Décompression du fichier .zip..."
-unzip "$DATA_DIR/fichier.zip" -d "$DATA_DIR"
+unzip -o -q "$ZIP_FILE" -d "$DATA_DIR"
 
-# Créer un fichier indicateur pour signaler la fin du processus (pour start_api)
-touch /app/data/download_done.txt
-
-# Vérifiez si la décompression a réussi
-if [ $? -eq 0 ]; then
-    echo "Décompression réussie. Les données sont disponibles dans $DATA_DIR."
-else
+# Vérifier si la décompression a réussi
+if [ $? -ne 0 ]; then
     echo "Erreur lors de la décompression."
     exit 1
+else
+    echo "Décompression réussie. Les données sont disponibles dans $DATA_DIR."
 fi
+
+# Créer un fichier indicateur pour signaler la fin du processus
+touch "$MARKER_FILE" || { echo "Erreur : Impossible de créer le fichier indicateur."; exit 1; }
+
+echo "Processus terminé avec succès !"
