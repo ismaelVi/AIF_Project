@@ -3,7 +3,7 @@
 # Définition des variables
 DATA_DIR="/app"
 ZIP_FILE="$DATA_DIR/fichier.zip"
-MARKER_FILE="$DATA_DIR/data/RINE.txt"
+MARKER_FILE="$DATA_DIR/data/DONE.txt"
 FILE_ID="1JYfJaqkkHz6eD5MiJQF2dtj77XnuCGKx"
 
 # Vérifier et créer le répertoire si nécessaire
